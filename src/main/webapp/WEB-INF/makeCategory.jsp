@@ -19,7 +19,7 @@
 	<div class="container">
 		<h1>New Category</h1>
 		<div class="form-group">
-			<form:form action="/categories/make" method="post" modelAttribute="addCategory">
+			<form:form action="/categories/make" method="post" modelAttribute="category">
 			<form:label path="name">Name: </form:label>
 			<form:errors path="name" class="text-danger" />
 			<form:input path="name" class="form-control col-4"/><br>

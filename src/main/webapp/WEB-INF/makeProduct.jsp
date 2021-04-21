@@ -33,7 +33,7 @@
 		<div class="form-group">
 			<form:label path="price">Price: </form:label>
 			<form:errors path="price" class="text-danger" />
-			<form:input type="number" path="price" class="form-control col-4"/><br>
+			<form:input type="number" step=".01" path="price" class="form-control col-4"/><br>
 		</div>
 
 			<input class="btn btn-primary" type="submit" value="Create"/>
