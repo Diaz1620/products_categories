@@ -20,7 +20,7 @@
 	<div class="container">
 		<h1>Hello Let's Make Some Product and Category Relationships!</h1>
 		<div>
-			<h3>All Products</h3>
+			<h3>All Products So Far</h3>
 			<table class="table table-dark">
 				<thead>
 					<tr>
@@ -40,6 +40,12 @@
 				</tbody>
 			</table>
 		</div>
+		<h3>All Categories So Far</h3>
+		<ul class="list-group w-50">
+			<c:forEach items="${allCats}" var="cats">
+				<a href="/categories/${cats.id}" class="list-group-item list-group-item-info list-group-item-action">${cats.name}</a>
+			</c:forEach>
+		</ul>
 	</div>
 
 </body>

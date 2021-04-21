@@ -52,4 +52,12 @@ public class AppService {
 		return this.crRepo.save(cp);
 	}
 	
+	public List<Product> FindLeftOverProducts(Category category) {
+		return this.prodRepo.findByCategoriesNotContains(category);
+	}
+	
+	public List<Category> FindLeftOverCategories(Product product) {
+		return this.catRepo.findByProductsNotContains(product);
+	}
+	
 }

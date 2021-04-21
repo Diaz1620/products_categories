@@ -29,6 +29,7 @@ public class HomeController {
 	@RequestMapping("/")
 	public String home(Model model) {
 		model.addAttribute("allProducts", this.appService.getAllProducts());
+		model.addAttribute("allCats", this.appService.getAllCategories());
 		return "index.jsp";
 	}
 	
@@ -52,15 +53,31 @@ public class HomeController {
 	@GetMapping("/products/{id}")
 	public String showProduct(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("oneProd", this.appService.getProductById(id));
-		model.addAttribute("allCats", this.appService.getAllCategories() );
+		model.addAttribute("allCats", this.appService.FindLeftOverCategories(this.appService.getProductById(id)));
 		return "showProd.jsp";
 	}
 	
 
 	@GetMapping("/categories/new")
-	public String  newCategory(Model model) {
-		model.addAttribute("addCategory", new Category());
+	public String  newCategory(@ModelAttribute("category") Category category) {
 		return "makeCategory.jsp";
+	}
+	
+	@PostMapping("/categories/make")
+	public String makeCategory(@Valid @ModelAttribute("category") Category category, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			return "makeCategory.jsp";
+		} else {
+			this.appService.createCategory(category);
+			return "redirect:/";			
+		}
+	}
+	
+	@GetMapping("/categories/{id}")
+	public String showCategory(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("oneCat", this.appService.getCategoryById(id));
+		model.addAttribute("allProd", this.appService.FindLeftOverProducts(this.appService.getCategoryById(id)));
+		return "showCat.jsp";
 	}
 
 	@PostMapping("/addCatToProd")
@@ -80,6 +97,21 @@ public class HomeController {
 		return String.format("redirect:/products/%d", prodid);
 	}
 
+	@PostMapping("/addProdToCat/{id}")
+	public String addToCat(@PathVariable("id") Long id, @RequestParam(value="selectedProd") Long prodid) {
 
+//		get a product with selected id
+		Product prodtoGet = this.appService.getProductById(prodid);
+		
+//		get an category with selected id
+		Category cattoGet = this.appService.getCategoryById(id);
+		
+		CategoryProduct association = new CategoryProduct(prodtoGet, cattoGet);
+		
+//		tell the service to create a new entry in the third table
+		this.appService.creatAssociation(association);
+		
+		return String.format("redirect:/categories/%d", id);
+	}
 
 }
